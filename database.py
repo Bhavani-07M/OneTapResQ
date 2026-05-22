@@ -361,70 +361,48 @@ def get_ev_requests():
 
     return data
 # =====================================================
-# CREATE USER
+# CREATE USERS TABLE
 # =====================================================
 
-def create_user(
-    username,
-    password,
-    role
-):
+cursor.execute(
+    """
+    CREATE TABLE IF NOT EXISTS users (
 
-    conn = sqlite3.connect(
-        "onetapresq.db",
-        check_same_thread=False
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        username TEXT,
+
+        password TEXT,
+
+        phone TEXT,
+
+        role TEXT
     )
+    """
+)
 
-    cursor = conn.cursor()
+conn.commit()
 
-    # =================================================
-    # CHECK EXISTING USERNAME
-    # =================================================
+# =====================================================
+# ADD PHONE COLUMN IF NOT EXISTS
+# =====================================================
+
+try:
 
     cursor.execute(
         """
-        SELECT * FROM users
-        WHERE username = ?
-        """,
-        (username,)
-    )
-
-    existing_user = cursor.fetchone()
-
-    if existing_user:
-
-        conn.close()
-
-        return False
-
-    # =================================================
-    # CREATE NEW USER
-    # =================================================
-
-    cursor.execute(
+        ALTER TABLE users
+        ADD COLUMN phone TEXT
         """
-        INSERT INTO users (
-
-            username,
-            password,
-            role
-
-        )
-
-        VALUES (?, ?, ?)
-        """,
-        (
-            username,
-            password,
-            role
-        )
     )
 
     conn.commit()
 
-    conn.close()
+except:
 
-    return True
+    pass
+
+
 # =====================================================
 # CREATE USER
 # =====================================================
@@ -432,6 +410,7 @@ def create_user(
 def create_user(
     username,
     password,
+    phone,
     role
 ):
 
@@ -472,15 +451,17 @@ def create_user(
 
             username,
             password,
+            phone,
             role
 
         )
 
-        VALUES (?, ?, ?)
+        VALUES (?, ?, ?, ?)
         """,
         (
             username,
             password,
+            phone,
             role
         )
     )
