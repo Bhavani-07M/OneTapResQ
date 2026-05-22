@@ -262,9 +262,10 @@ if not st.session_state.logged_in:
             "🔑 Password",
             type="password"
         )
+
         phone = st.text_input(
-           "📞 Phone Number"
-          )
+            "📞 Phone Number"
+        )
 
         role = st.selectbox(
             "Select Role",
@@ -276,26 +277,43 @@ if not st.session_state.logged_in:
 
         if st.button("✅ Create Account"):
 
-            user_created = create_user(
-                new_username,
-                new_password,
-                phone,
-                role
+            # =============================================
+            # PHONE VALIDATION
+            # =============================================
 
-            )
+            if not phone:
 
-            if user_created:
+                st.error(
+                    "⚠ Phone Number is required"
+                )
 
-                st.success(
-                    "Account Created Successfully🥳"
-                    ", now switch to login and signin"
+            elif len(phone) != 10 or not phone.isdigit():
+
+                st.error(
+                    "⚠ Enter valid 10-digit phone number"
                 )
 
             else:
 
-                st.error(
-                    "⚠ Username already exists"
+                user_created = create_user(
+                    new_username,
+                    new_password,
+                    phone,
+                    role
                 )
+
+                if user_created:
+
+                    st.success(
+                        "Account Created Successfully🥳"
+                        ", now switch to login and signin"
+                    )
+
+                else:
+
+                    st.error(
+                        "⚠ Username already exists"
+                    )
 
     # =====================================================
     # LOGIN
@@ -327,7 +345,7 @@ if not st.session_state.logged_in:
 
                 st.session_state.username = user[1]
 
-                st.session_state.user_role = user[3]
+                st.session_state.user_role = user[4]
 
                 st.success(
                     f"Welcome {user[1]}"
@@ -619,7 +637,7 @@ if service_option == "🏠 Home":
        st.image(
           "fuel_help.png",
           caption="⛽ Community Fuel Assistance",
-          width=450
+          width=330
           )
 
     with img2:
@@ -627,7 +645,7 @@ if service_option == "🏠 Home":
        st.image(
           "mechanic_help.png",
           caption="🔧 Nearby Mechanic Support",
-          width=450
+          width=330
            )
 
     img3, img4 = st.columns(2)
@@ -637,7 +655,7 @@ if service_option == "🏠 Home":
       st.image(
          "EV_charging_station.png",
          caption="⚡ EV Charging Assistance",
-         width=450
+         width=330
     )
 
     with img4:
@@ -645,7 +663,7 @@ if service_option == "🏠 Home":
       st.image(
           "Rescue_team.png",
            caption="🚨 Emergency Rescue Team",
-           width=450
+           width=330
     )  
 
 # =========================================================
