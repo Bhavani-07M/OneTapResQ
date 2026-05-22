@@ -813,6 +813,8 @@ elif service_option == "⛽ Community Fuel Share":
 
 elif service_option == "🔧 Mechanic Service":
 
+    import time
+
     st.title("🔧 Mechanic Assistance")
 
     st.subheader(
@@ -908,13 +910,13 @@ elif service_option == "🔧 Mechanic Service":
         )
 
         save_mechanic_request(
-           name,
-           phone,
-           vehicle,
-           issue,
-           help_type,
-           st.session_state.current_place
-         )
+            name,
+            phone,
+            vehicle,
+            issue,
+            help_type,
+            st.session_state.current_place
+        )
 
         st.markdown("## 📋 Submitted Details")
 
@@ -963,113 +965,177 @@ elif service_option == "🔧 Mechanic Service":
 
         st.session_state.show_mechanics = True
 
+    # =====================================================
+    # SHOW MECHANICS
+    # =====================================================
 
-# =====================================================
-# SHOW MECHANICS
-# =====================================================
+    if st.session_state.show_mechanics:
 
-if st.session_state.show_mechanics:
+        st.markdown("---")
 
-    import time
+        st.markdown("## 🔧 Nearby Mechanics")
 
-    st.markdown("## 🔧 Nearby Mechanics")
+        mechanics = [
 
-    mech1_col1, mech1_col2 = st.columns([5, 2])
+            {
+                "name": "Ramesh Auto Garage",
+                "rating": "4.8",
+                "distance": "1.2 km away",
+                "eta": "8 mins ETA",
+                "phone": "9876501234",
+                "place": "Madhapur, Hyderabad",
+                "lat": 17.3855,
+                "lon": 78.4875
+            }
 
-    with mech1_col1:
+        ]
 
-        st.markdown(
-            """
-            ### 👨‍🔧 Ramesh Auto Garage
+        for mechanic in mechanics:
 
-            ⭐ 4.8 Rating
+            mech_col1, mech_col2 = st.columns([5, 2])
 
-            📍 1.2 km away
+            with mech_col1:
 
-            ⏱ 8 mins ETA
+                st.markdown(
+                    f"""
+                    ### 👨‍🔧 {mechanic['name']}
 
-            📞 9876501234
+                    ⭐ {mechanic['rating']} Rating
 
-            🏪 Madhapur, Hyderabad
-            """
-        )
+                    📍 {mechanic['distance']}
 
-    with mech1_col2:
+                    ⏱ {mechanic['eta']}
 
-        # =============================================
-        # REQUEST BUTTON
-        # =============================================
+                    📞 {mechanic['phone']}
 
-        if st.button(
-            "Request",
-            key="m1"
-        ):
+                    🏪 {mechanic['place']}
+                    """
+                )
 
-            st.warning(
-                "⏳ Waiting for mechanic response..."
-            )
+            with mech_col2:
 
-            time.sleep(3)
+                request_key = (
+                    f"{mechanic['name']}_request"
+                )
 
-            st.session_state.m1_requested = True
+                accept_key = (
+                    f"{mechanic['name']}_accept"
+                )
 
-        # =============================================
-        # MECHANIC ACCEPTED REQUEST
-        # =============================================
+                waiting_key = (
+                    f"{mechanic['name']}_waiting"
+                )
 
-        if st.session_state.get(
-            "m1_requested",
-            False
-        ):
+                if request_key not in st.session_state:
+                    st.session_state[request_key] = False
 
-            st.success(
-                "✅ Ramesh accepted your request"
-            )
+                if accept_key not in st.session_state:
+                    st.session_state[accept_key] = False
 
-            if st.button(
-                "Simulate Mechanic Acceptance",
-                key="m1_accept"
-            ):
+                if waiting_key not in st.session_state:
+                    st.session_state[waiting_key] = False
 
-                st.session_state.m1_accepted = True
+                request_clicked = st.button(
+                    "Request",
+                    key=f"{request_key}_btn"
+                )
 
-        # =============================================
-        # SHOW MECHANIC DETAILS
-        # =============================================
+                # =========================================
+                # REQUEST CLICKED
+                # =========================================
 
-        if st.session_state.get(
-            "m1_accepted",
-            False
-        ):
+                if request_clicked:
 
-            st.success(
-                "🚘 Mechanic On The Way"
-            )
+                    st.session_state[waiting_key] = True
 
-            st.write(
-                "📞 Phone: 9876501234"
-            )
+                    st.rerun()
 
-            st.write(
-                "🏪 Ramesh Auto Garage"
-            )
+                # =========================================
+                # WAITING FOR RESPONSE
+                # =========================================
 
-            st.write(
-                "📍 Madhapur, Hyderabad"
-            )
+                if st.session_state.get(
+                    waiting_key,
+                    False
+                ):
 
-            mechanic_live_map = pd.DataFrame(
-                {
-                    "lat": [17.3855],
-                    "lon": [78.4875]
-                }
-            )
+                    waiting_box = st.empty()
 
-            st.markdown(
-                "### 📍 Live Mechanic Location"
-            )
+                    waiting_box.warning(
+                        "⏳ WAITING FOR RESPONSE..."
+                    )
 
-            st.map(mechanic_live_map)  
+                    st.session_state[waiting_key] = False
+
+                    time.sleep(3)
+
+                    waiting_box.empty()
+
+                    st.session_state[request_key] = True
+
+                    st.rerun()
+
+                # =========================================
+                # AFTER REQUEST ACCEPTED
+                # =========================================
+
+                if st.session_state.get(
+                    request_key,
+                    False
+                ):
+
+                    st.success(
+                        f"✅ {mechanic['name']} accepted your request"
+                    )
+
+                    accept_clicked = st.button(
+                        "Simulate Mechanic Acceptance",
+                        key=f"{accept_key}_btn"
+                    )
+
+                    if accept_clicked:
+
+                        st.session_state[accept_key] = True
+
+                # =========================================
+                # SHOW MECHANIC DETAILS
+                # =========================================
+
+                if st.session_state.get(
+                    accept_key,
+                    False
+                ):
+
+                    st.success(
+                        "🚘 Mechanic On The Way"
+                    )
+
+                    st.write(
+                        f"📞 Phone: {mechanic['phone']}"
+                    )
+
+                    st.write(
+                        f"🏪 {mechanic['name']}"
+                    )
+
+                    st.write(
+                        f"📍 {mechanic['place']}"
+                    )
+
+                    mechanic_live_map = pd.DataFrame(
+                        {
+                            "lat": [mechanic["lat"]],
+                            "lon": [mechanic["lon"]]
+                        }
+                    )
+
+                    st.markdown(
+                        "### 📍 Live Mechanic Location"
+                    )
+
+                    st.map(mechanic_live_map)
+
+            st.markdown("---")
 # =========================================================
 # EV CHARGING SERVICE
 # =========================================================
