@@ -149,6 +149,17 @@ st.markdown(
     box-shadow:
         0px 10px 25px rgba(0,0,0,0.45);
     }
+    .feature-card h3 {
+
+    color: #ffffff;
+
+    }
+
+   .feature-card p {
+
+    color: #f3f4f6;
+
+    }
 
     /* EMERGENCY BUTTON */
 
@@ -177,11 +188,11 @@ st.markdown(
 
         border-radius: 18px !important;
 
-        height: 70px !important;
+        height: 58px !important;
 
-        width: 370px !important;
+        width: 260px !important;
 
-        font-size: 24px !important;
+        font-size: 20px !important;
 
         font-weight: 900 !important;
 
@@ -262,6 +273,9 @@ if not st.session_state.logged_in:
             "🔑 Password",
             type="password"
         )
+        phone = st.text_input(
+          "📞 Phone Number"
+        )
 
         role = st.selectbox(
             "Select Role",
@@ -276,6 +290,7 @@ if not st.session_state.logged_in:
             user_created = create_user(
                 new_username,
                 new_password,
+                phone,
                 role
             )
 
@@ -614,7 +629,7 @@ if service_option == "🏠 Home":
        st.image(
           "fuel_help.png",
           caption="⛽ Community Fuel Assistance",
-          width="stretch"
+          width=450
           )
 
     with img2:
@@ -622,7 +637,7 @@ if service_option == "🏠 Home":
        st.image(
           "mechanic_help.png",
           caption="🔧 Nearby Mechanic Support",
-          width="stretch"
+          width=450
            )
 
     img3, img4 = st.columns(2)
@@ -632,7 +647,7 @@ if service_option == "🏠 Home":
       st.image(
          "EV_charging_station.png",
          caption="⚡ EV Charging Assistance",
-         width="stretch"
+         width=450
     )
 
     with img4:
@@ -640,14 +655,15 @@ if service_option == "🏠 Home":
       st.image(
           "Rescue_team.png",
            caption="🚨 Emergency Rescue Team",
-           width="stretch"
+           width=450
     )  
-
 # =========================================================
 # COMMUNITY FUEL SHARE
 # =========================================================
 
 elif service_option == "⛽ Community Fuel Share":
+
+    import time
 
     st.title("⛽ Community Fuel Share")
 
@@ -716,33 +732,48 @@ elif service_option == "⛽ Community Fuel Share":
             )
 
             if request_clicked:
+
+                with st.spinner(
+                    "🔍 Searching nearby helpers..."
+                ):
+
+                    time.sleep(3)
+
                 st.session_state[request_key] = True
+
+            # =====================================================
+            # AFTER REQUEST ACCEPTED
+            # =====================================================
 
             if st.session_state.get(request_key, False):
 
-                st.warning("⏳ Request Pending")
-
-                st.info(
-                    f"Waiting for {user['name']} to accept..."
+                st.success(
+                    f"✅ {user['name']} accepted your request"
                 )
 
                 accept_clicked = st.button(
-                    f"Simulate {user['name']} Accept",
+                    f"Simulate {user['name']} Acceptance",
                     key=f"{accept_key}_btn"
                 )
 
                 if accept_clicked:
+
                     st.session_state[accept_key] = True
+
+            # =====================================================
+            # SHOW HELPER DETAILS
+            # =====================================================
 
             if st.session_state.get(accept_key, False):
 
                 st.success(
-                    f"✅ {user['name']} Accepted Your Request"
+                    f"🚗 {user['name']} is on the way"
                 )
+
                 save_fuel_request(
-                     user["name"],
-                     user["phone"],
-                     user["place"]
+                    user["name"],
+                    user["phone"],
+                    user["place"]
                 )
 
                 st.write(
@@ -767,7 +798,6 @@ elif service_option == "⛽ Community Fuel Share":
                 st.map(helper_map)
 
         st.markdown("---")
-
 # =========================================================
 # MECHANIC SERVICE
 # =========================================================
