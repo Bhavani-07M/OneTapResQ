@@ -107,33 +107,12 @@ cursor.execute(
 
         password TEXT,
 
-        phone TEXT,
-
         role TEXT
     )
     """
 )
 
 conn.commit()
-# =====================================================
-# ADD PHONE COLUMN IF NOT EXISTS
-# =====================================================
-
-try:
-
-    cursor.execute(
-        """
-        ALTER TABLE users
-        ADD COLUMN phone TEXT
-        """
-    )
-
-    conn.commit()
-
-except:
-
-    pass
-
 # =====================================================
 # SAVE MECHANIC REQUEST
 # =====================================================
@@ -381,7 +360,6 @@ def get_ev_requests():
     conn.close()
 
     return data
-
 # =====================================================
 # CREATE USER
 # =====================================================
@@ -389,9 +367,7 @@ def get_ev_requests():
 def create_user(
     username,
     password,
-    phone,
     role
-    
 ):
 
     conn = sqlite3.connect(
@@ -431,17 +407,80 @@ def create_user(
 
             username,
             password,
-            phone,
             role
 
         )
 
-        VALUES (?, ?, ?, ?)
+        VALUES (?, ?, ?)
         """,
         (
             username,
             password,
-            phone,
+            role
+        )
+    )
+
+    conn.commit()
+
+    conn.close()
+
+    return True
+# =====================================================
+# CREATE USER
+# =====================================================
+
+def create_user(
+    username,
+    password,
+    role
+):
+
+    conn = sqlite3.connect(
+        "onetapresq.db",
+        check_same_thread=False
+    )
+
+    cursor = conn.cursor()
+
+    # =================================================
+    # CHECK EXISTING USERNAME
+    # =================================================
+
+    cursor.execute(
+        """
+        SELECT * FROM users
+        WHERE username = ?
+        """,
+        (username,)
+    )
+
+    existing_user = cursor.fetchone()
+
+    if existing_user:
+
+        conn.close()
+
+        return False
+
+    # =================================================
+    # CREATE NEW USER
+    # =================================================
+
+    cursor.execute(
+        """
+        INSERT INTO users (
+
+            username,
+            password,
+            role
+
+        )
+
+        VALUES (?, ?, ?)
+        """,
+        (
+            username,
+            password,
             role
         )
     )
@@ -478,7 +517,7 @@ def login_user(
         """,
         (
             username,
-            password,
+            password
         )
     )
 
