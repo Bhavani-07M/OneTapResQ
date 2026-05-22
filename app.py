@@ -743,7 +743,7 @@ elif service_option == "⛽ Community Fuel Share":
             if request_clicked:
 
                 with st.spinner(
-                    "🔍 Searching nearby helpers..."
+                    " WAITING FOR RESPONSE..."
                 ):
 
                     time.sleep(3)
@@ -963,87 +963,113 @@ elif service_option == "🔧 Mechanic Service":
 
         st.session_state.show_mechanics = True
 
-    # =====================================================
-    # SHOW MECHANICS
-    # =====================================================
 
-    if st.session_state.show_mechanics:
+# =====================================================
+# SHOW MECHANICS
+# =====================================================
 
-        st.markdown("## 🔧 Nearby Mechanics")
+if st.session_state.show_mechanics:
 
-        mech1_col1, mech1_col2 = st.columns([5, 2])
+    import time
 
-        with mech1_col1:
+    st.markdown("## 🔧 Nearby Mechanics")
 
-            st.markdown(
-                """
-                ### 👨‍🔧 Ramesh Auto Garage
+    mech1_col1, mech1_col2 = st.columns([5, 2])
 
-                ⭐ 4.8 • 📍 1.2 km away • ⏱ 8 mins ETA
-                """
+    with mech1_col1:
+
+        st.markdown(
+            """
+            ### 👨‍🔧 Ramesh Auto Garage
+
+            ⭐ 4.8 Rating
+
+            📍 1.2 km away
+
+            ⏱ 8 mins ETA
+
+            📞 9876501234
+
+            🏪 Madhapur, Hyderabad
+            """
+        )
+
+    with mech1_col2:
+
+        # =============================================
+        # REQUEST BUTTON
+        # =============================================
+
+        if st.button(
+            "Request",
+            key="m1"
+        ):
+
+            st.warning(
+                "⏳ Waiting for mechanic response..."
             )
 
-        with mech1_col2:
+            time.sleep(3)
+
+            st.session_state.m1_requested = True
+
+        # =============================================
+        # MECHANIC ACCEPTED REQUEST
+        # =============================================
+
+        if st.session_state.get(
+            "m1_requested",
+            False
+        ):
+
+            st.success(
+                "✅ Ramesh accepted your request"
+            )
 
             if st.button(
-                "Request",
-                key="m1"
+                "Simulate Mechanic Acceptance",
+                key="m1_accept"
             ):
 
-                st.session_state.m1_requested = True
+                st.session_state.m1_accepted = True
 
-            if st.session_state.get(
-                "m1_requested",
-                False
-            ):
+        # =============================================
+        # SHOW MECHANIC DETAILS
+        # =============================================
 
-                st.warning("⏳ Request Pending")
+        if st.session_state.get(
+            "m1_accepted",
+            False
+        ):
 
-                st.info(
-                    "Waiting for mechanic approval..."
-                )
+            st.success(
+                "🚘 Mechanic On The Way"
+            )
 
-                if st.button(
-                    "Simulate Mechanic Accept",
-                    key="m1_accept"
-                ):
+            st.write(
+                "📞 Phone: 9876501234"
+            )
 
-                    st.session_state.m1_accepted = True
+            st.write(
+                "🏪 Ramesh Auto Garage"
+            )
 
-            if st.session_state.get(
-                "m1_accepted",
-                False
-            ):
+            st.write(
+                "📍 Madhapur, Hyderabad"
+            )
 
-                st.success(
-                    "✅ Mechanic Accepted "
-                    "Your Request"
-                )
+            mechanic_live_map = pd.DataFrame(
+                {
+                    "lat": [17.3855],
+                    "lon": [78.4875]
+                }
+            )
 
-                st.write(
-                    "📞 Phone: 9876501234"
-                )
+            st.markdown(
+                "### 📍 Live Mechanic Location"
+            )
 
-                st.write(
-                    "📍 Madhapur, Hyderabad"
-                )
-
-                st.write(
-                    "🚘 Mechanic On The Way"
-                )
-
-                mechanic_live_map = pd.DataFrame(
-                    {
-                        "lat": [17.3855],
-                        "lon": [78.4875]
-                    }
-                )
-
-                st.markdown(
-                    "### 📍 Live Mechanic Location"
-                )
-
-                st.map(mechanic_live_map)
+            st.map(mechanic_live_map)  
 # =========================================================
 # EV CHARGING SERVICE
 # =========================================================
