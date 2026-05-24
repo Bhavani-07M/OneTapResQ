@@ -318,8 +318,6 @@ The project can be further enhanced with advanced real-time and AI-powered funct
 
 # 🌟 Project Goal
 
-The primary goal of OneTapResQ is to improve roadside safety, reduce emergency response delays, and provide a smart, accessible, and community-driven emergency assistance platform for vehicle users.
-
-The platform aims to simplify roadside support services through technology, real-time assistance systems, and user-friendly emergency workflows.
+OneTapResQ aims to improve roadside safety and reduce emergency response time by providing a smart, accessible, and community-driven emergency assistance platform for vehicle users. The system streamlines roadside support services using real-time technology, efficient emergency workflows, and seamless coordination between users and service providers.
 
 ---
