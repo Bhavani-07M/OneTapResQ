@@ -84,6 +84,7 @@ This module ensures secure access to the platform and enables role-based functio
 # 🏠 Home Dashboard
 
 The homepage acts as the central navigation dashboard for all services available in OneTapResQ.
+
 <img width="1886" height="786" alt="home_page" src="https://github.com/user-attachments/assets/f389455e-a36f-4565-a796-fd75efd13dcb" />
 ### Dashboard Highlights
 
@@ -103,6 +104,7 @@ Users can easily access all emergency support services from one place.
 
 The Emergency Safeguard system is one of the core features of OneTapResQ.
 <img width="948" height="520" alt="Emergency_button" src="https://github.com/user-attachments/assets/91aa4bef-1fb1-4022-800b-4f0948018644" />
+
 It allows users to instantly trigger emergency alerts during unsafe or critical situations.
 
 ### Features
@@ -115,6 +117,7 @@ It allows users to instantly trigger emergency alerts during unsafe or critical 
 - Interactive emergency map support
 - Fast emergency workflow system
 <img width="1665" height="703" alt="Emergency_details" src="https://github.com/user-attachments/assets/d5dfed7a-7f99-407c-99be-b6b7040dafc4" />
+
 This feature improves roadside safety and ensures quicker emergency response.
 
 ---
@@ -132,6 +135,7 @@ The Community Fuel Share feature helps users connect with nearby people who can 
 - Live helper location tracking
 - Community-based emergency support
 - Interactive request handling
+- 
 <img width="1894" height="856" alt="fuel_share" src="https://github.com/user-attachments/assets/27b50d05-3dd4-48e1-8a86-7b35a7891792" />
 
 This module promotes community-driven roadside assistance and collaborative support systems.
@@ -141,6 +145,7 @@ This module promotes community-driven roadside assistance and collaborative supp
 # 🔧 Mechanic Assistance Service
 
 The Mechanic Assistance module helps users quickly request roadside mechanic support during vehicle breakdowns.
+
 <img width="1546" height="795" alt="mechanic" src="https://github.com/user-attachments/assets/69b01e91-84cf-43de-afff-05894e22c8b4" />
 
 ### Features
@@ -157,6 +162,7 @@ The Mechanic Assistance module helps users quickly request roadside mechanic sup
 
 The module is designed to reduce waiting time and improve accessibility to nearby mechanics.
 <img width="1574" height="720" alt="mech_details" src="https://github.com/user-attachments/assets/8653ec58-8538-4010-8bed-f5efb6347305" />
+
 <img width="1622" height="860" alt="mech_accept_details" src="https://github.com/user-attachments/assets/d13b75e0-6284-46df-9775-1b7c7ab635dc" />
 
 ---
