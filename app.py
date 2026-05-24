@@ -345,7 +345,7 @@ if not st.session_state.logged_in:
 
                 st.session_state.username = user[1]
 
-                st.session_state.user_role = user[4]
+                st.session_state.user_role = user[3]
 
                 st.success(
                     f"Welcome {user[1]}"
